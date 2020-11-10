@@ -26,20 +26,20 @@ def test_get_single_movie(monkeypatch):
 
 
 def test_get_single_movie_cast(monkeypatch):
-    mock_single_movie_cast = {'Id': 1, 'cast': [1, 2]}
+    mock_single_movie_cast = {'cast': 'James Bond'}
     requests_mock = Mock()
     response = requests_mock.return_value
     response.json.return_value = mock_single_movie_cast
     monkeypatch.setattr("tmdb_client.requests.get", requests_mock)
-    single_movie_cast = tmdb_client.get_single_movie_cast(movie_id=1)
-    return single_movie_cast == mock_single_movie_cast
+    single_movie_cast = tmdb_client.get_single_movie_cast(movie_id=2)
+    assert single_movie_cast == mock_single_movie_cast['cast']
 
 
 def test_get_movie_images(monkeypatch):
-    mock_movie_images = {'Id': 1, 'movie': [1, 2]}
+    mock_movie_images = ['img1', 'img2', 'img3', 'img4']
     requests_mock = Mock()
     response = requests_mock.return_value
     response.json.return_value = mock_movie_images
     monkeypatch.setattr("tmdb_client.requests.get", requests_mock)
     movie_images = tmdb_client.get_movie_images(movie_id=1)
-    return movie_images == mock_movie_images
+    assert movie_images == mock_movie_images
