@@ -11,9 +11,9 @@ import pytest
 ))
 def test_homepage(monkeypatch, n, result):
     api_mock = Mock(return_value={'results': []})
-    monkeypatch.setattr("tmdb_client.call_tmdb_api", api_mock)
+    monkeypatch.setattr("tmdb_client.get_movies", api_mock)
 
     with app.test_client() as client:
-        response = client.get("/")
-        assert response.status_code == 200
-        api_mock.assert_called_once_with({'popular'})
+        response = client.get(f"/?list_type={n}")
+        assert response.status_code == result
+        api_mock.assert_called_once_with(how_many=8, list_type=n)
